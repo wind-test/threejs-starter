@@ -35,14 +35,7 @@ function App() {
             <Header>
               <PageHeader />
             </Header>
-            <Content
-              style={{
-                // display: "flex",
-                // justifyContent: "center",
-                padding: "50px",
-                overflow: "auto",
-              }}
-            >
+            <Content>
               <Routes>
                 {menu.map((item) => {
                   if (item.children) {

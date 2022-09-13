@@ -6,10 +6,11 @@
  */
 
 import Chapter1_1 from "../pages/chapter1-1";
+import Chapter1_2 from "../pages/chapter1-2";
 
 export const menu = [
   {
-    label: "1. React Introduce",
+    label: "1. Three.js介绍",
     key: "1",
     children: [
       {
@@ -17,6 +18,12 @@ export const menu = [
         key: "1-1",
         path: "/abstract/feature",
         component: Chapter1_1,
+      },
+      {
+        label: "1.2 Three.js快速上手",
+        key: "1-2",
+        path: "/abstract/firstTry",
+        component: Chapter1_2,
       },
     ]
   },
