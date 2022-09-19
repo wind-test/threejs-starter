@@ -1,24 +1,19 @@
-/*
- * @Title: three.js的动画
- * @Author: huangjitao
- * @Date: 2022-09-14 17:27:20
- * @Description: clock动画、gsap动画、图形用户界面。
- */
 import React from "react";
 import { useSize } from "ahooks";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import GUI from "lil-gui";
+import { MeshLambertMaterial } from "three";
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
   controls: OrbitControls,
   axesHelper,
-  clock: THREE.Clock,
   mesh: THREE.Mesh;
 
-const Chapter2_2 = () => {
+const Chapter2_3 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -71,9 +66,38 @@ const Chapter2_2 = () => {
     /** ---创建轨道控制器--- */
     controls = new OrbitControls(camera, renderer.domElement);
 
-    /** ---创建时钟--- */
-    clock = new THREE.Clock();
-    clock.start();
+    /** ---创建图形界面工具--- */
+    const panel = new GUI();
+    panel
+      .add(mesh, "visible")
+      .name("显示物体")
+      .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
+    panel
+      .addColor(mesh.material, "color")
+      .name("改变物体颜色")
+      .onChange((v: string) => {
+        const material = mesh.material as MeshLambertMaterial
+        material.color.set(v)
+      });
+    const positionPanel = panel.addFolder("移动物体位置");
+    positionPanel
+      .add(mesh.position, "x")
+      .min(0)
+      .max(5)
+      .step(0.01)
+      .name("移动x轴");
+    positionPanel
+      .add(mesh.position, "y")
+      .min(0)
+      .max(5)
+      .step(0.01)
+      .name("移动y轴");
+    positionPanel
+      .add(mesh.position, "z")
+      .min(0)
+      .max(5)
+      .step(0.01)
+      .name("移动z轴");
 
     /** ---渲染--- */
     render();
@@ -97,17 +121,6 @@ const Chapter2_2 = () => {
 
   function render() {
     controls.update();
-    const time = clock.getElapsedTime();
-    const offSet = time % 5;
-    if (time > 25) {
-      // 循环5次后关闭时钟
-      mesh.position.x = 0;
-      mesh.position.y = 0;
-      clock.stop();
-    } else {
-      mesh.position.x = offSet;
-      mesh.position.y = offSet;
-    }
     renderer.render(scene, camera);
     // 渲染下一帧的时候就会调用render函数
     requestAnimationFrame(render);
@@ -146,4 +159,4 @@ const Chapter2_2 = () => {
   );
 };
 
-export default Chapter2_2;
+export default Chapter2_3;

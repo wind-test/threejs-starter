@@ -9,6 +9,7 @@ import Chapter1_1 from "../pages/chapter1-1";
 import Chapter1_2 from "../pages/chapter1-2";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
+import Chapter2_3 from "../pages/chapter2-3";
 
 export const menu = [
   {
@@ -44,6 +45,12 @@ export const menu = [
         key: "2-2",
         path: "/basicOpt/animation",
         component: Chapter2_2,
+      },
+      {
+        label: "2.3 图形界面工具",
+        key: "2-3",
+        path: "/basicOpt/gui-tool",
+        component: Chapter2_3,
       },
     ]
   },
