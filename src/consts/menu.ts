@@ -8,6 +8,7 @@
 import Chapter1_1 from "../pages/chapter1-1";
 import Chapter1_2 from "../pages/chapter1-2";
 import Chapter2_1 from "../pages/chapter2-1";
+import Chapter2_2 from "../pages/chapter2-2";
 
 export const menu = [
   {
@@ -37,6 +38,12 @@ export const menu = [
         key: "2-1",
         path: "/basicOpt/objOpt",
         component: Chapter2_1,
+      },
+      {
+        label: "2.2 基本动画操作",
+        key: "2-2",
+        path: "/basicOpt/animation",
+        component: Chapter2_2,
       },
     ]
   },
