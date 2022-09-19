@@ -7,6 +7,7 @@
 
 import Chapter1_1 from "../pages/chapter1-1";
 import Chapter1_2 from "../pages/chapter1-2";
+import Chapter2_1 from "../pages/chapter2-1";
 
 export const menu = [
   {
@@ -24,6 +25,18 @@ export const menu = [
         key: "1-2",
         path: "/abstract/firstTry",
         component: Chapter1_2,
+      },
+    ]
+  },
+  {
+    label: "2. Three.js基本操作",
+    key: "2",
+    children: [
+      {
+        label: "2.1 操作物体",
+        key: "2-1",
+        path: "/basicOpt/objOpt",
+        component: Chapter2_1,
       },
     ]
   },
