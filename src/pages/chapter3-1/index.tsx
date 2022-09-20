@@ -26,19 +26,41 @@ const Chapter3_1 = () => {
     /** --- 创建一个网格模型 --- */
     // 创建一个几何体
     const geometry = new THREE.BufferGeometry();
-    // 因为在两个三角面片里，一共有六个顶点，其中两个顶点是一模一样的。
+    // // 因为在两个三角面片里，一共有六个顶点，其中两个顶点是一模一样的。
+    // const vertices = new Float32Array([
+    //   -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0,
+    //   1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0,
+    // ]);
+    // // 顶点的法线向量，设置后可以突出光照
+    // const normals = new Float32Array([
+    //   0,0,1,0,0,1,0,0,1,
+    //   0,0,1,0,0,1,0,0,1
+    // ])
+    // // 一个顶点由三个坐标表示，因此创建时，三个坐标值为一组
+    // geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+    // geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3))
+
+    // 使用index（索引）复用顶点
     const vertices = new Float32Array([
-      -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0,
-      1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0,
+      -1.0, -1.0, 1.0,   1.0, -1.0, 1.0,
+      1.0, 1.0, 1.0,   -1.0, 1.0, 1.0, 
     ]);
     // 顶点的法线向量，设置后可以突出光照
     const normals = new Float32Array([
-      0,0,1,0,0,1,0,0,1,
-      0,0,1,0,0,1,0,0,1
+      0, 0, 1, 0, 0, 1,
+      0, 0, 1, 0, 0, 1
+    ])
+    const indexes = new Uint16Array([
+      // 0对应第1个顶点位置数据、第1个顶点法向量数据
+      // 1对应第2个顶点位置数据、第2个顶点法向量数据
+      // 索引值3个为一组，表示一个三角形的3个顶点
+      0, 1, 2,
+      0, 2, 3,
     ])
     // 一个顶点由三个坐标表示，因此创建时，三个坐标值为一组
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
     geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3))
+    geometry.index = new THREE.BufferAttribute(indexes, 1)
 
     // 创建一个材质对象
     const material = new THREE.MeshLambertMaterial({ color: 0x0000ff });
