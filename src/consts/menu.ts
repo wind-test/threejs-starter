@@ -10,6 +10,7 @@ import Chapter1_2 from "../pages/chapter1-2";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
+import Chapter3_1 from "../pages/chapter3-1";
 
 export const menu = [
   {
@@ -51,6 +52,18 @@ export const menu = [
         key: "2-3",
         path: "/basicOpt/gui-tool",
         component: Chapter2_3,
+      },
+    ]
+  },
+  {
+    label: "3. Three.js物体",
+    key: "3",
+    children: [
+      {
+        label: "3.1 自定义几何体",
+        key: "3-1",
+        path: "/mesh/customGeometry",
+        component: Chapter3_1,
       },
     ]
   },

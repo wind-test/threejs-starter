@@ -1,19 +1,21 @@
-import React from "react";
+/*
+ * @Title: three.js自定义几何体
+ * @Author: huangjitao
+ * @Date: 2022-09-14 17:27:20
+ * @Description: 深入研究three.js中的geometry，自定义一个矩形
+ */
 import { useSize } from "ahooks";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import GUI from "lil-gui";
-import { MeshLambertMaterial } from "three";
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
   controls: OrbitControls,
-  axesHelper,
-  mesh: THREE.Mesh;
+  axesHelper;
 
-const Chapter2_3 = () => {
+const Chapter3_1 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -23,12 +25,25 @@ const Chapter2_3 = () => {
 
     /** --- 创建一个网格模型 --- */
     // 创建一个几何体
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const geometry = new THREE.BufferGeometry();
+    // 因为在两个三角面片里，一共有六个顶点，其中两个顶点是一模一样的。
+    const vertices = new Float32Array([
+      -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0,
+      1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0,
+    ]);
+    // 顶点的法线向量，设置后可以突出光照
+    const normals = new Float32Array([
+      0,0,1,0,0,1,0,0,1,
+      0,0,1,0,0,1,0,0,1
+    ])
+    // 一个顶点由三个坐标表示，因此创建时，三个坐标值为一组
+    geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+    geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3))
+
     // 创建一个材质对象
     const material = new THREE.MeshLambertMaterial({ color: 0x0000ff });
     // 创建一个网格模型对象
-    mesh = new THREE.Mesh(geometry, material);
-    console.log("mesh:", mesh);
+    const mesh = new THREE.Mesh(geometry, material);
     // 将网格模型对象添加到场景中
     scene.add(mesh);
 
@@ -67,40 +82,6 @@ const Chapter2_3 = () => {
     /** ---创建轨道控制器--- */
     controls = new OrbitControls(camera, renderer.domElement);
 
-    /** ---创建图形界面工具--- */
-    const panel = new GUI();
-    panel
-      .add(mesh, "visible")
-      .name("显示物体")
-      .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
-    panel
-      .addColor(mesh.material, "color")
-      .name("改变物体颜色")
-      .onChange((v: string) => {
-        const material = mesh.material as MeshLambertMaterial
-        material.color.set(v)
-      });
-    const positionPanel = panel.addFolder("移动物体位置");
-    positionPanel
-      .add(mesh.position, "x")
-      .min(0)
-      .max(5)
-      .step(0.01)
-      .name("移动x轴");
-    positionPanel
-      .add(mesh.position, "y")
-      .min(0)
-      .max(5)
-      .step(0.01)
-      .name("移动y轴");
-    positionPanel
-      .add(mesh.position, "z")
-      .min(0)
-      .max(5)
-      .step(0.01)
-      .name("移动z轴");
-
-    /** ---渲染--- */
     render();
   };
 
@@ -141,7 +122,6 @@ const Chapter2_3 = () => {
   useEffect(() => {
     // 初始化three场景
     initThree();
-    // 添加双击时间
     window.addEventListener("dblclick", fullScreen);
     return () => {
       window.removeEventListener("dblclick", fullScreen);
@@ -160,4 +140,4 @@ const Chapter2_3 = () => {
   );
 };
 
-export default Chapter2_3;
+export default Chapter3_1;
