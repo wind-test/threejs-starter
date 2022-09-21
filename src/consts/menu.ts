@@ -11,6 +11,7 @@ import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
 import Chapter3_1 from "../pages/chapter3-1";
+import Chapter3_2 from "../pages/chapter3-2";
 
 export const menu = [
   {
@@ -64,6 +65,12 @@ export const menu = [
         key: "3-1",
         path: "/mesh/customGeometry",
         component: Chapter3_1,
+      },
+      {
+        label: "3.2 随机炫酷几何体",
+        key: "3-2",
+        path: "/mesh/awesomeGeometry",
+        component: Chapter3_2,
       },
     ]
   },
