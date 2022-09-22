@@ -12,6 +12,7 @@ import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
 import Chapter3_1 from "../pages/chapter3-1";
 import Chapter3_2 from "../pages/chapter3-2";
+import Chapter4_1 from "../pages/chapter4-1";
 
 export const menu = [
   {
@@ -71,6 +72,18 @@ export const menu = [
         key: "3-2",
         path: "/mesh/awesomeGeometry",
         component: Chapter3_2,
+      },
+    ]
+  },
+  {
+    label: "4. 材质与纹理",
+    key: "4",
+    children: [
+      {
+        label: "4.1 自定义几何体",
+        key: "4-1",
+        path: "/textures/loadTexture",
+        component: Chapter4_1,
       },
     ]
   },

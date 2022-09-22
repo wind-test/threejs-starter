@@ -14,3 +14,10 @@ html, body {
   right: 10px;
   z-index: 1001;
 }
+
+.load-tip {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  z-index: 1001;
+}
