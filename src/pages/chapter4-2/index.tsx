@@ -1,12 +1,14 @@
 /*
- * @Title: three.js加载纹理
+ * @Title: your project
  * @Author: huangjitao
- * @Date: 2022-09-14 17:27:20
- * @Description: 深入研究three.js中的geometry，自定义一个矩形
+ * @Date: 2022-09-26 10:04:43
+ * @Description: description of this file
  */
+
 import { useSize } from "ahooks";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { Vector2 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
@@ -15,7 +17,7 @@ let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   controls: OrbitControls,
   axesHelper;
 
-const Chapter4_1 = () => {
+const Chapter4_2 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
   const [loadTip, setLoadTip] = useState<string>("");
@@ -48,18 +50,21 @@ const Chapter4_1 = () => {
 
     const textureLoader = new THREE.TextureLoader(loadingManager);
     const colorTexture = textureLoader.load("/textures/door/color.jpg");
-    const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-    const heightTexture = textureLoader.load("/textures/door/height.jpg");
-    const normalTexture = textureLoader.load("/textures/door/normal.jpg");
-    const alphaTexture1 = textureLoader.load("/textures/door/alpha.jpg");
-    const heightTexture1 = textureLoader.load("/textures/door/height.jpg");
-    const normalTexture1 = textureLoader.load("/textures/door/normal.jpg");
-    const alphaTexture2 = textureLoader.load("/textures/door/alpha.jpg");
-    const heightTexture2 = textureLoader.load("/textures/door/height.jpg");
-    const normalTexture2 = textureLoader.load("/textures/door/normal.jpg");
-    const alphaTexture3 = textureLoader.load("/textures/door/alpha.jpg");
-    const heightTexture3 = textureLoader.load("/textures/door/height.jpg");
-    const normalTexture3 = textureLoader.load("/textures/door/normal.jpg");
+
+    // 纹理变换
+    colorTexture.repeat.x = 2;
+    colorTexture.repeat.x = 3;
+    // 以上两个设置并没有repeat，而是边缘的像素被拉伸了，需要再设置属性wrapS和wrapT
+    colorTexture.wrapS = THREE.RepeatWrapping;
+    colorTexture.wrapT = THREE.RepeatWrapping;
+    // colorTexture.wrapS = THREE.MirroredRepeatWrapping;
+    // colorTexture.wrapT = THREE.MirroredRepeatWrapping;
+    // 设置偏移属性
+    colorTexture.offset.x = 0.5
+    colorTexture.offset.y = 0
+    // 设置旋转属性
+    colorTexture.rotation = Math.PI / 4
+    colorTexture.center = new Vector2(0.5, 0.5)
 
     // 创建一个材质对象
     const material = new THREE.MeshBasicMaterial({ map: colorTexture });
@@ -158,9 +163,12 @@ const Chapter4_1 = () => {
 
   return (
     <div id="container" style={{ width: "100%", height: "100%" }} ref={ref}>
-      <div className="load-tip" id="tip">{loadTip}</div>
+      <div className="load-tip" id="tip">
+        {loadTip}
+      </div>
     </div>
   );
 };
 
-export default Chapter4_1;
+export default Chapter4_2;
+

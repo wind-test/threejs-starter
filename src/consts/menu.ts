@@ -13,6 +13,7 @@ import Chapter2_3 from "../pages/chapter2-3";
 import Chapter3_1 from "../pages/chapter3-1";
 import Chapter3_2 from "../pages/chapter3-2";
 import Chapter4_1 from "../pages/chapter4-1";
+import Chapter4_2 from "../pages/chapter4-2";
 
 export const menu = [
   {
@@ -80,10 +81,16 @@ export const menu = [
     key: "4",
     children: [
       {
-        label: "4.1 自定义几何体",
+        label: "4.1 加载纹理",
         key: "4-1",
         path: "/textures/loadTexture",
         component: Chapter4_1,
+      },
+      {
+        label: "4.2 纹理变换",
+        key: "4-2",
+        path: "/textures/textureTransform",
+        component: Chapter4_2,
       },
     ]
   },
