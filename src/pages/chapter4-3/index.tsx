@@ -1,7 +1,7 @@
 /*
- * @Title: 纹理变换
+ * @Title: 纹理显示算法
  * @Author: huangjitao
- * @Date: 2022-09-26 10:04:43
+ * @Date: 2022-09-26 15:39:32
  * @Description: description of this file
  */
 
@@ -17,7 +17,7 @@ let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   controls: OrbitControls,
   axesHelper;
 
-const Chapter4_2 = () => {
+const Chapter4_3 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
   const [loadTip, setLoadTip] = useState<string>("");
@@ -49,25 +49,13 @@ const Chapter4_2 = () => {
     };
 
     const textureLoader = new THREE.TextureLoader(loadingManager);
-    const colorTexture = textureLoader.load("/textures/door/color.jpg");
+    const texture = textureLoader.load("/textures/minecraft.png");
 
-    // 纹理变换
-    colorTexture.repeat.x = 2;
-    colorTexture.repeat.x = 3;
-    // 以上两个设置并没有repeat，而是边缘的像素被拉伸了，需要再设置属性wrapS和wrapT
-    colorTexture.wrapS = THREE.RepeatWrapping;
-    colorTexture.wrapT = THREE.RepeatWrapping;
-    // colorTexture.wrapS = THREE.MirroredRepeatWrapping;
-    // colorTexture.wrapT = THREE.MirroredRepeatWrapping;
-    // 设置偏移属性
-    colorTexture.offset.x = 0.5
-    colorTexture.offset.y = 0
-    // 设置旋转属性
-    colorTexture.rotation = Math.PI / 4
-    colorTexture.center = new Vector2(0.5, 0.5)
+    texture.minFilter = THREE.NearestFilter;
+    texture.magFilter = THREE.NearestFilter;
 
     // 创建一个材质对象
-    const material = new THREE.MeshBasicMaterial({ map: colorTexture });
+    const material = new THREE.MeshBasicMaterial({ map: texture });
     // 创建一个网格模型对象
     const mesh = new THREE.Mesh(geometry, material);
     // 将网格模型对象添加到场景中
@@ -170,5 +158,4 @@ const Chapter4_2 = () => {
   );
 };
 
-export default Chapter4_2;
-
+export default Chapter4_3;

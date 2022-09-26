@@ -14,6 +14,7 @@ import Chapter3_1 from "../pages/chapter3-1";
 import Chapter3_2 from "../pages/chapter3-2";
 import Chapter4_1 from "../pages/chapter4-1";
 import Chapter4_2 from "../pages/chapter4-2";
+import Chapter4_3 from "../pages/chapter4-3";
 
 export const menu = [
   {
@@ -91,6 +92,12 @@ export const menu = [
         key: "4-2",
         path: "/textures/textureTransform",
         component: Chapter4_2,
+      },
+      {
+        label: "4.3 纹理显示算法",
+        key: "4-3",
+        path: "/textures/textureMinMap",
+        component: Chapter4_3,
       },
     ]
   },
