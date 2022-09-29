@@ -15,6 +15,7 @@ import Chapter3_2 from "../pages/chapter3-2";
 import Chapter4_1 from "../pages/chapter4-1";
 import Chapter4_2 from "../pages/chapter4-2";
 import Chapter4_3 from "../pages/chapter4-3";
+import Chapter4_4 from "../pages/chapter4-4";
 
 export const menu = [
   {
@@ -98,6 +99,12 @@ export const menu = [
         key: "4-3",
         path: "/textures/textureMinMap",
         component: Chapter4_3,
+      },
+      {
+        label: "4.4 基础材质参数",
+        key: "4-4",
+        path: "/textures/basicMaterial",
+        component: Chapter4_4,
       },
     ]
   },
