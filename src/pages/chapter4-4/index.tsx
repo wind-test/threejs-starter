@@ -6,9 +6,9 @@
  */
 
 import { useSize } from "ahooks";
+import GUI from "lil-gui";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Vector2 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
@@ -51,20 +51,68 @@ const Chapter4_4 = () => {
     const textureLoader = new THREE.TextureLoader(loadingManager);
     const colorTexture = textureLoader.load("/textures/door/color.jpg");
     const AlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+    const AoTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
 
-    // 透明材质
     const material = new THREE.MeshBasicMaterial({
       color: "#ffff00",
       map: colorTexture,
       alphaMap: AlphaTexture,
       transparent: true,
       opacity: 0.5,
+      aoMap: AoTexture,
+      aoMapIntensity: 0.5,
       side: THREE.DoubleSide,
     });
+    // aoMap需要第二组UV。
+    geometry.setAttribute(
+      "uv2",
+      new THREE.BufferAttribute(geometry.attributes.uv.array, 2)
+    );
     // 创建一个网格模型对象
     const mesh = new THREE.Mesh(geometry, material);
     // 将网格模型对象添加到场景中
     scene.add(mesh);
+
+    /** ---创建图形界面工具--- */
+    const panel = new GUI();
+    panel
+      .add(material, "alphaMap", { "fibers": AlphaTexture, "none": null })
+      .name("透明度贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      })
+    panel
+      .add(material, "transparent")
+      .name("是否透明")
+      .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
+    panel
+      .add(material, "opacity")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name("设置透明度");
+    panel
+      .add(material, "aoMap", { "fibers": AoTexture, "none": null })
+      .name("环境遮挡贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      })
+    panel
+      .add(material, "aoMapIntensity")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name("环境遮挡强度");
+    panel
+      .add(material, "side", {
+        'THREE.FrontSide': THREE.FrontSide,
+        'THREE.BackSide': THREE.BackSide,
+        'THREE.DoubleSide': THREE.DoubleSide
+      })
+      .name('渲染面')
+      .onChange((value: any) => {
+				material.needsUpdate = true;
+      })
 
     /** --- 设置光源 --- */
     // 点光源
