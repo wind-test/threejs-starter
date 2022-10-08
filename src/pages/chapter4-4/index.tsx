@@ -61,6 +61,7 @@ const Chapter4_4 = () => {
       opacity: 0.5,
       aoMap: AoTexture,
       aoMapIntensity: 0.5,
+      wireframe: false,
       side: THREE.DoubleSide,
     });
     // aoMap需要第二组UV。
@@ -111,8 +112,11 @@ const Chapter4_4 = () => {
       })
       .name('渲染面')
       .onChange((value: any) => {
-				material.needsUpdate = true;
+        material.needsUpdate = true;
       })
+    panel
+      .add(material, "wireframe")
+      .name("是否线框")
 
     /** --- 设置光源 --- */
     // 点光源
