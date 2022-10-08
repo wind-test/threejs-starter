@@ -4,11 +4,11 @@
  * @Date: 2021-08-04 20:27:49
  * @Function: 该文件用途描述
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Layout } from "antd";
 import SideMenu from "./components/SideMunu";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { menu } from "./consts/menu";
 import PageHeader from "./components/PageHeader";
 

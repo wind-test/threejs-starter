@@ -16,6 +16,7 @@ import Chapter4_1 from "../pages/chapter4-1";
 import Chapter4_2 from "../pages/chapter4-2";
 import Chapter4_3 from "../pages/chapter4-3";
 import Chapter4_4 from "../pages/chapter4-4";
+import Chapter4_5 from "../pages/chapter4-5";
 
 export const menu = [
   {
@@ -105,6 +106,12 @@ export const menu = [
         key: "4-4",
         path: "/textures/basicMaterial",
         component: Chapter4_4,
+      },
+      {
+        label: "4.5 标准材质参数",
+        key: "4-5",
+        path: "/textures/standardMaterial",
+        component: Chapter4_5,
       },
     ]
   },

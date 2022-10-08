@@ -1,5 +1,5 @@
 /*
- * @Title: 基础材质的参数
+ * @Title: 标准材质的参数
  * @Author: huangjitao
  * @Date: 2022-09-29 10:38:09
  * @Description: 透明度纹理、环境遮挡贴图
@@ -17,7 +17,7 @@ let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   controls: OrbitControls,
   axesHelper;
 
-const Chapter4_4 = () => {
+const Chapter4_5 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
   const [loadTip, setLoadTip] = useState<string>("");
@@ -28,7 +28,7 @@ const Chapter4_4 = () => {
 
     /** --- 创建一个网格模型 --- */
     // 创建一个几何体
-    const geometry = new THREE.BoxGeometry();
+    const geometry = new THREE.BoxGeometry(1, 1, 1, 100, 100, 100);
 
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
@@ -49,18 +49,29 @@ const Chapter4_4 = () => {
     };
 
     const textureLoader = new THREE.TextureLoader(loadingManager);
-    const colorTexture = textureLoader.load("/textures/door/color.jpg");
-    const AlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-    const AoTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
+    const ColorTexture = textureLoader.load("/textures/door/color.jpg");
+    const AlphaTexture = textureLoader.load("/textures/door/alpha.jpg"); // 透明贴图
+    const AoTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg"); // 环境遮挡贴图
+    const DisplaceTexture = textureLoader.load("/textures/door/height.jpg"); // 置换贴图
+    const RoughnessTexture = textureLoader.load("/textures/door/roughness.jpg"); // 粗糙度贴图
+    const MetalnessTexture = textureLoader.load("/textures/door/metalness.jpg"); // 金属度贴图
+    const NormalTexture = textureLoader.load("/textures/door/normal.jpg");// 法线贴图
 
-    const material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshStandardMaterial({
       color: "#ffff00",
-      map: colorTexture,
-      alphaMap: AlphaTexture,
+      map: ColorTexture,
+      alphaMap: null,
       transparent: true,
-      opacity: 0.5,
-      aoMap: AoTexture,
-      aoMapIntensity: 0.5,
+      opacity: 1,
+      aoMap: null,
+      aoMapIntensity: 1,
+      displacementMap: DisplaceTexture,
+      displacementScale: 0.1,
+      roughnessMap: null,
+      roughness: 1,
+      metalnessMap: null,
+      metalness: 1,
+      normalMap: null,
       side: THREE.DoubleSide,
     });
     // aoMap需要第二组UV。
@@ -75,53 +86,104 @@ const Chapter4_4 = () => {
 
     /** ---创建图形界面工具--- */
     const panel = new GUI();
-    panel
-      .add(material, "alphaMap", { "fibers": AlphaTexture, "none": null })
+    const basicMaterialPanel = panel.addFolder("BasicMaterial");
+    basicMaterialPanel
+      .add(material, "alphaMap", { hasMap: AlphaTexture, none: null })
       .name("透明贴图")
       .onChange((value: any) => {
         material.needsUpdate = true;
-      })
-    panel
+      });
+    basicMaterialPanel
       .add(material, "transparent")
       .name("是否透明")
       .onChange(() => console.log(`当前物体是否显示：${mesh.visible}`));
-    panel
+    basicMaterialPanel
       .add(material, "opacity")
       .min(0)
       .max(1)
       .step(0.01)
       .name("设置透明度");
-    panel
-      .add(material, "aoMap", { "fibers": AoTexture, "none": null })
+    basicMaterialPanel
+      .add(material, "aoMap", { hasMap: AoTexture, none: null })
       .name("环境遮挡贴图")
       .onChange((value: any) => {
         material.needsUpdate = true;
-      })
-    panel
+      });
+    basicMaterialPanel
       .add(material, "aoMapIntensity")
       .min(0)
       .max(1)
       .step(0.01)
       .name("环境遮挡强度");
-    panel
+    basicMaterialPanel
       .add(material, "side", {
-        'THREE.FrontSide': THREE.FrontSide,
-        'THREE.BackSide': THREE.BackSide,
-        'THREE.DoubleSide': THREE.DoubleSide
+        "THREE.FrontSide": THREE.FrontSide,
+        "THREE.BackSide": THREE.BackSide,
+        "THREE.DoubleSide": THREE.DoubleSide,
       })
-      .name('渲染面')
+      .name("渲染面")
       .onChange((value: any) => {
-				material.needsUpdate = true;
-      })
+        material.needsUpdate = true;
+      });
+
+    const standardMaterialPanel = panel.addFolder("StandardMaterial");
+    standardMaterialPanel
+      .add(material, "displacementMap", { hasMap: DisplaceTexture, none: null })
+      .name("置换贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      });
+    standardMaterialPanel
+      .add(material, "displacementScale")
+      .min(0)
+      .max(0.1)
+      .step(0.0001)
+      .name("置换贴图顶点细分度")
+
+    standardMaterialPanel
+      .add(material, "roughnessMap", { hasMap: RoughnessTexture, none: null })
+      .name("粗糙度贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      });
+    standardMaterialPanel
+      .add(material, "roughness")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name("粗糙程度")
+
+    standardMaterialPanel
+      .add(material, "metalnessMap", { hasMap: MetalnessTexture, none: null })
+      .name("金属度贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      });
+    standardMaterialPanel
+      .add(material, "metalness")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name("金属相似度")
+    standardMaterialPanel
+      .add(material, "normalMap", { hasMap: NormalTexture, none: null })
+      .name("法线贴图")
+      .onChange((value: any) => {
+        material.needsUpdate = true;
+      });
 
     /** --- 设置光源 --- */
-    // 点光源
-    const point = new THREE.PointLight(0xffffff);
-    point.position.set(4, 2, 3);
-    scene.add(point); //点光源添加到场景中
-    //环境光
-    const ambient = new THREE.AmbientLight(0x444444);
+    // // 点光源
+    // const point = new THREE.PointLight(0xffffff);
+    // point.position.set(0, 5, 10);
+    // scene.add(point); //点光源添加到场景中
+    // 环境光
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambient);
+    // 直线光
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(10, 10, 10);
+    scene.add(directionalLight);
 
     /** ---添加坐标辅助--- */
     axesHelper = new THREE.AxesHelper(5);
@@ -211,4 +273,4 @@ const Chapter4_4 = () => {
   );
 };
 
-export default Chapter4_4;
+export default Chapter4_5;
