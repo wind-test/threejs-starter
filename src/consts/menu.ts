@@ -17,6 +17,7 @@ import Chapter4_2 from "../pages/chapter4-2";
 import Chapter4_3 from "../pages/chapter4-3";
 import Chapter4_4 from "../pages/chapter4-4";
 import Chapter4_5 from "../pages/chapter4-5";
+import Chapter4_6 from "../pages/chapter4-6";
 
 export const menu = [
   {
@@ -112,6 +113,12 @@ export const menu = [
         key: "4-5",
         path: "/textures/standardMaterial",
         component: Chapter4_5,
+      },
+      {
+        label: "4.6 环境贴图与hdr",
+        key: "4-6",
+        path: "/textures/envhdr",
+        component: Chapter4_6,
       },
     ]
   },
