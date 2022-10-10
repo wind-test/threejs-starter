@@ -18,6 +18,7 @@ import Chapter4_3 from "../pages/chapter4-3";
 import Chapter4_4 from "../pages/chapter4-4";
 import Chapter4_5 from "../pages/chapter4-5";
 import Chapter4_6 from "../pages/chapter4-6";
+import Chapter5_1 from "../pages/chapter5-1";
 
 export const menu = [
   {
@@ -122,4 +123,16 @@ export const menu = [
       },
     ]
   },
+  {
+    label: "5. 材质与纹理",
+    key: "5",
+    children: [
+      {
+        label: "5.1 直线光源",
+        key: "5-1",
+        path: "/light/directionalLight",
+        component: Chapter5_1,
+      },
+    ]
+  }
 ]

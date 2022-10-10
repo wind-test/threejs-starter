@@ -11,4 +11,4 @@ three.js入门指南
 结合学习和开发，总结出的一套快速入门three.js的项目
 
 #### 笔记地址
-https://winddancer.notion.site/React-Hook-e6eca2a8579b4cf7a9a54ae21d6eb4f9
+https://winddancer.notion.site/Three-js-b11a04cecbda40c39831274cfb3e6dcd
