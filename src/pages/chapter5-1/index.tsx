@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useSize } from "ahooks";
 import GUI from "lil-gui";
 import { useEffect, useRef, useState } from "react";
@@ -21,11 +21,11 @@ const Chapter5_1 = () => {
 
     /** --- 创建网格模型 --- */
     // 创建一个几何体
-    const geometry = new THREE.SphereGeometry(1,20, 20);
+    const geometry = new THREE.SphereGeometry(1, 20, 20);
     const material = new THREE.MeshStandardMaterial();
     // 创建一个网格模型对象
     const mesh = new THREE.Mesh(geometry, material);
-    // 设置物体投射阴影 
+    // 设置物体投射阴影
     mesh.castShadow = true;
     // 将网格模型对象添加到场景中
     scene.add(mesh);
@@ -45,9 +45,68 @@ const Chapter5_1 = () => {
     scene.add(ambient);
     // 直线光
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(10, 10, 10);
-    directionalLight.castShadow = true
+    directionalLight.position.set(5, 5, 5);
+    directionalLight.castShadow = true;
+
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 500;
+    directionalLight.shadow.camera.top = 5;
+    directionalLight.shadow.camera.bottom = -5;
+    directionalLight.shadow.camera.left = -5;
+    directionalLight.shadow.camera.right = 5;
+
     scene.add(directionalLight);
+
+    const panel = new GUI();
+    const directionalLightPanel = panel.addFolder("平行光");
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "near")
+      .min(0)
+      .max(10)
+      .step(0.1)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "far")
+      .min(0)
+      .max(1000)
+      .step(10)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "top")
+      .min(0)
+      .max(10)
+      .step(1)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "bottom")
+      .min(-10)
+      .max(0)
+      .step(1)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "left")
+      .min(-10)
+      .max(0)
+      .step(1)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
+    directionalLightPanel
+      .add(directionalLight.shadow.camera, "right")
+      .min(0)
+      .max(10)
+      .step(1)
+      .onChange(() => {
+        directionalLight.shadow.camera.updateProjectionMatrix();
+      });
 
     /** ---添加坐标辅助--- */
     axesHelper = new THREE.AxesHelper(5);
@@ -130,8 +189,11 @@ const Chapter5_1 = () => {
   }, [size?.width, size?.height]);
 
   return (
-    <div id="container" style={{ width: "100%", height: "100%" }} ref={ref}>
-    </div>
+    <div
+      id="container"
+      style={{ width: "100%", height: "100%" }}
+      ref={ref}
+    ></div>
   );
 };
 

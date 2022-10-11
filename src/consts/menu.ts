@@ -124,11 +124,11 @@ export const menu = [
     ]
   },
   {
-    label: "5. 材质与纹理",
+    label: "5. 光源",
     key: "5",
     children: [
       {
-        label: "5.1 直线光源",
+        label: "5.1 平行光源",
         key: "5-1",
         path: "/light/directionalLight",
         component: Chapter5_1,
