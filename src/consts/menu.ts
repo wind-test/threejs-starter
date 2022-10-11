@@ -19,6 +19,7 @@ import Chapter4_4 from "../pages/chapter4-4";
 import Chapter4_5 from "../pages/chapter4-5";
 import Chapter4_6 from "../pages/chapter4-6";
 import Chapter5_1 from "../pages/chapter5-1";
+import Chapter5_2 from "../pages/chapter5-2";
 
 export const menu = [
   {
@@ -128,10 +129,16 @@ export const menu = [
     key: "5",
     children: [
       {
-        label: "5.1 平行光源",
+        label: "5.1 平行光",
         key: "5-1",
         path: "/light/directionalLight",
         component: Chapter5_1,
+      },
+      {
+        label: "5.2 聚光灯",
+        key: "5-2",
+        path: "/light/spotLight",
+        component: Chapter5_2,
       },
     ]
   }
