@@ -20,6 +20,7 @@ import Chapter4_5 from "../pages/chapter4-5";
 import Chapter4_6 from "../pages/chapter4-6";
 import Chapter5_1 from "../pages/chapter5-1";
 import Chapter5_2 from "../pages/chapter5-2";
+import Chapter5_3 from "../pages/chapter5-3";
 
 export const menu = [
   {
@@ -139,6 +140,12 @@ export const menu = [
         key: "5-2",
         path: "/light/spotLight",
         component: Chapter5_2,
+      },
+      {
+        label: "5.3 点光源",
+        key: "5-3",
+        path: "/light/pointLight",
+        component: Chapter5_3,
       },
     ]
   }

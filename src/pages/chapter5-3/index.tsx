@@ -1,3 +1,9 @@
+/*
+ * @Title: your project
+ * @Author: huangjitao
+ * @Date: 2022-10-12 11:17:18
+ * @Description: description of this file
+ */
 import React from "react";
 import { useSize } from "ahooks";
 import GUI from "lil-gui";
@@ -11,7 +17,7 @@ let scene: THREE.Scene,
   controls: OrbitControls,
   axesHelper;
 
-const Chapter5_2 = () => {
+const Chapter5_3 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -43,35 +49,32 @@ const Chapter5_2 = () => {
     // 环境光
     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambient);
-    // 直线光
-    const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.position.set(5, 5, 5);
-    spotLight.castShadow = true;
-    spotLight.intensity = 2;
+
+    const smallBall = new THREE.Mesh(
+      new THREE.SphereGeometry(0.1, 20, 20),
+      new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    );
+    smallBall.position.set(2, 2, 2);
+    //直线光源
+    const pointLight = new THREE.PointLight(0xff0000, 1);
+    // pointLight.position.set(2, 2, 2);
+    pointLight.castShadow = true;
 
     // 设置阴影贴图模糊度
-    spotLight.shadow.radius = 20;
+    pointLight.shadow.radius = 20;
     // 设置阴影贴图的分辨率
-    spotLight.shadow.mapSize.set(512, 512);
-    spotLight.target = mesh;
-    spotLight.angle = Math.PI / 6;
-    spotLight.distance = 0;
-    spotLight.penumbra = 0;
-    spotLight.decay = 0;
+    pointLight.shadow.mapSize.set(512, 512);
+    pointLight.decay = 0;
 
-    scene.add(spotLight);
+    // 设置透视相机的属性
+    smallBall.add(pointLight);
+    scene.add(smallBall);
 
     const panel = new GUI();
-    const spotLightPanel = panel.addFolder("平行光");
-    spotLightPanel.add(mesh.position, "x").min(-5).max(5).step(0.1);
-    spotLightPanel
-      .add(spotLight, "angle")
-      .min(0)
-      .max(Math.PI / 2)
-      .step(0.01);
-    spotLightPanel.add(spotLight, "distance").min(0).max(10).step(0.01);
-    spotLightPanel.add(spotLight, "penumbra").min(0).max(1).step(0.01);
-    spotLightPanel.add(spotLight, "decay").min(0).max(5).step(0.01);
+    const pointLightPanel = panel.addFolder("点光源");
+    pointLightPanel.add(smallBall.position, "x").min(-5).max(5).step(0.1);
+    pointLightPanel.add(smallBall.position, "y").min(-5).max(5).step(0.1);
+    pointLightPanel.add(smallBall.position, "z").min(-5).max(5).step(0.1);
 
     /** ---添加坐标辅助--- */
     axesHelper = new THREE.AxesHelper(5);
@@ -92,6 +95,7 @@ const Chapter5_2 = () => {
 
     // 创建渲染器
     renderer = new THREE.WebGLRenderer();
+    // 开启场景中的阴影贴图
     renderer.shadowMap.enabled = true;
     renderer.physicallyCorrectLights = true;
     renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
@@ -163,4 +167,4 @@ const Chapter5_2 = () => {
   );
 };
 
-export default Chapter5_2;
+export default Chapter5_3;
