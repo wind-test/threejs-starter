@@ -1,9 +1,10 @@
 /*
- * @Title: 点光源
+ * @Title: 点材质
  * @Author: huangjitao
- * @Date: 2022-10-12 11:17:18
- * @Description: description of this file
+ * @Date: 2022-10-18 16:36:34
+ * @Description: 点材质及其属性
  */
+
 import React from "react";
 import { useSize } from "ahooks";
 import GUI from "lil-gui";
@@ -17,7 +18,7 @@ let scene: THREE.Scene,
   controls: OrbitControls,
   axesHelper;
 
-const Chapter5_3 = () => {
+const Chapter6_1 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -27,54 +28,72 @@ const Chapter5_3 = () => {
 
     /** --- 创建网格模型 --- */
     // 创建一个几何体
-    const geometry = new THREE.SphereGeometry(1, 20, 20);
-    const material = new THREE.MeshStandardMaterial();
+    const geometry = new THREE.SphereGeometry(3, 30, 30);
+    const material = new THREE.PointsMaterial();
+    material.size = 0.1;
+    material.color.set(0xfff000);
+    material.sizeAttenuation = true;
+    // 点材质设置纹理
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load("/textures/particles/2.png");
+    // 设置点材质纹理
+    material.map = texture;
+    material.alphaMap = texture;
+    material.transparent = true;
+    material.depthWrite = false;
+    material.blending = THREE.AdditiveBlending;
     // 创建一个网格模型对象
-    const mesh = new THREE.Mesh(geometry, material);
-    // 设置物体投射阴影
-    mesh.castShadow = true;
+    const mesh = new THREE.Points(geometry, material);
     // 将网格模型对象添加到场景中
     scene.add(mesh);
 
-    // 创建平面
-    const planeGeometry = new THREE.PlaneGeometry(50, 50);
-    const plane = new THREE.Mesh(planeGeometry, material);
-    plane.position.set(0, -1, 0);
-    plane.rotation.x = -Math.PI / 2;
-    // 接收其它物体的阴影
-    plane.receiveShadow = true;
-    scene.add(plane);
+    const panel = new GUI();
+    panel.add(material, "size")
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name('点的大小')
+    panel.add(material, "sizeAttenuation")
+      .name('是否因相机深度而衰减')
+      .onChange((visible: boolean) => {
+        material.needsUpdate = true
+      })
+    panel.add(material, "transparent")
+      .name('材质是否透明')
+      .onChange((visible: boolean) => {
+        material.needsUpdate = true
+      })
+    panel.add(material, "depthWrite")
+      .name('渲染此材质是否对深度缓冲区有任何影响')
+      .onChange((visible: boolean) => {
+        material.needsUpdate = true
+      })
+    panel.add(material, "blending", {
+      "THREE.NoBlending": THREE.NoBlending,
+      "THREE.NormalBlending": THREE.NormalBlending,
+      "THREE.AdditiveBlending": THREE.AdditiveBlending,
+      "THREE.SubtractiveBlending": THREE.SubtractiveBlending,
+      "THREE.MultiplyBlending": THREE.MultiplyBlending,
+      "THREE.CustomBlending": THREE.CustomBlending
+    })
+    .name('混合模式')
+    .onChange((visible: boolean) => {
+      material.needsUpdate = true
+    })
 
     /** --- 设置光源 --- */
     // 环境光
     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambient);
 
-    const smallBall = new THREE.Mesh(
-      new THREE.SphereGeometry(0.1, 20, 20),
-      new THREE.MeshBasicMaterial({ color: 0xff0000 })
-    );
-    smallBall.position.set(2, 2, 2);
     //直线光源
     const pointLight = new THREE.PointLight(0xff0000, 1);
-    // pointLight.position.set(2, 2, 2);
     pointLight.castShadow = true;
-
     // 设置阴影贴图模糊度
     pointLight.shadow.radius = 20;
     // 设置阴影贴图的分辨率
     pointLight.shadow.mapSize.set(512, 512);
     pointLight.decay = 0;
-
-    // 设置透视相机的属性
-    smallBall.add(pointLight);
-    scene.add(smallBall);
-
-    const panel = new GUI();
-    const pointLightPanel = panel.addFolder("点光源");
-    pointLightPanel.add(smallBall.position, "x").min(-5).max(5).step(0.1);
-    pointLightPanel.add(smallBall.position, "y").min(-5).max(5).step(0.1);
-    pointLightPanel.add(smallBall.position, "z").min(-5).max(5).step(0.1);
 
     /** ---添加坐标辅助--- */
     axesHelper = new THREE.AxesHelper(5);
@@ -98,7 +117,6 @@ const Chapter5_3 = () => {
     // 开启场景中的阴影贴图
     renderer.shadowMap.enabled = true;
     renderer.physicallyCorrectLights = true;
-    renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
     renderer.render(scene, camera);
     ref.current?.appendChild(renderer.domElement); //body元素中插入canvas对象
 
@@ -167,4 +185,4 @@ const Chapter5_3 = () => {
   );
 };
 
-export default Chapter5_3;
+export default Chapter6_1;

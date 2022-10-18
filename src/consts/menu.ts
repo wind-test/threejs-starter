@@ -21,6 +21,7 @@ import Chapter4_6 from "../pages/chapter4-6";
 import Chapter5_1 from "../pages/chapter5-1";
 import Chapter5_2 from "../pages/chapter5-2";
 import Chapter5_3 from "../pages/chapter5-3";
+import Chapter6_1 from "../pages/chapter6-1";
 
 export const menu = [
   {
@@ -148,5 +149,17 @@ export const menu = [
         component: Chapter5_3,
       },
     ]
-  }
+  },
+  {
+    label: "6. 粒子特效",
+    key: "6",
+    children: [
+      {
+        label: "6.1 点材质",
+        key: "6-1",
+        path: "/particles/pointsMaterial",
+        component: Chapter6_1,
+      },
+    ]
+  },
 ]
