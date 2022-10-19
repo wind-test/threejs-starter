@@ -15,7 +15,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 let scene: THREE.Scene,
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
-  controls: OrbitControls
+  controls: OrbitControls,
+  clock: THREE.Clock,
+  points_1: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>,
+  points_2: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>,
+  points_3: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>
 
 const Chapter6_2 = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -67,9 +71,9 @@ const Chapter6_2 = () => {
     /** --- 创建一个场景 --- */
     scene = new THREE.Scene();
 
-    const points_1 = createPoints(`/textures/particles/1.png`, 1.5);
-    const points_2 = createPoints(`/textures/particles/1.png`, 1);
-    const points_3 = createPoints(`/textures/particles/xh.png`, 2);
+    points_1 = createPoints(`/textures/particles/1.png`, 1.5);
+    points_2 = createPoints(`/textures/particles/1.png`, 1);
+    points_3 = createPoints(`/textures/particles/xh.png`, 2);
     scene.add(points_1)
     scene.add(points_2)
     scene.add(points_3)
@@ -112,6 +116,8 @@ const Chapter6_2 = () => {
     /** ---创建轨道控制器--- */
     controls = new OrbitControls(camera, renderer.domElement);
 
+    
+    clock = new THREE.Clock();
     render();
   };
 
@@ -132,6 +138,12 @@ const Chapter6_2 = () => {
   };
 
   function render() {
+    let time = clock.getElapsedTime();
+    points_1.rotation.x = time * 0.3;
+    points_2.rotation.x = time * 0.5;
+    points_2.rotation.y = time * 0.4;
+    points_3.rotation.x = time * 0.2;
+    points_3.rotation.y = time * 0.2;
     controls.update();
     renderer.render(scene, camera);
     // 渲染下一帧的时候就会调用render函数
