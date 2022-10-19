@@ -22,6 +22,7 @@ import Chapter5_1 from "../pages/chapter5-1";
 import Chapter5_2 from "../pages/chapter5-2";
 import Chapter5_3 from "../pages/chapter5-3";
 import Chapter6_1 from "../pages/chapter6-1";
+import Chapter6_2 from "../pages/chapter6-2";
 
 export const menu = [
   {
@@ -159,6 +160,12 @@ export const menu = [
         key: "6-1",
         path: "/particles/pointsMaterial",
         component: Chapter6_1,
+      },
+      {
+        label: "6.2 自定义雪花粒子特效",
+        key: "6-2",
+        path: "/particles/customSnow",
+        component: Chapter6_2,
       },
     ]
   },
