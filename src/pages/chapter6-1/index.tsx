@@ -26,9 +26,13 @@ const Chapter6_1 = () => {
     /** --- 创建一个场景 --- */
     scene = new THREE.Scene();
 
+    const params = {
+      widthSegments: 30,
+      heightSegments: 30
+    }
     /** --- 创建网格模型 --- */
     // 创建一个几何体
-    const geometry = new THREE.SphereGeometry(3, 30, 30);
+    const geometry = new THREE.SphereGeometry(3, params.widthSegments, params.heightSegments);
     const material = new THREE.PointsMaterial();
     material.size = 0.1;
     material.color.set(0xfff000);
@@ -43,11 +47,32 @@ const Chapter6_1 = () => {
     material.depthWrite = false;
     material.blending = THREE.AdditiveBlending;
     // 创建一个网格模型对象
-    const mesh = new THREE.Points(geometry, material);
+    const points = new THREE.Points(geometry, material);
     // 将网格模型对象添加到场景中
-    scene.add(mesh);
+    scene.add(points);
 
     const panel = new GUI();
+    console.log('points', points)
+    panel
+      .add(params, 'widthSegments')
+      .min(3)
+      .max(100)
+      .step(1)
+      .name('球的水平分段数')
+      .onChange((value: number) => {
+        points.geometry.dispose()
+        points.geometry = new THREE.SphereGeometry(3, params.widthSegments, params.heightSegments)
+      })
+    panel
+      .add(params, 'heightSegments')
+      .min(2)
+      .max(100)
+      .step(1)
+      .name('球的垂直分段数')
+      .onChange((value: number) => {
+        points.geometry.dispose()
+        points.geometry = new THREE.SphereGeometry(3, params.widthSegments, params.heightSegments)
+      })
     panel.add(material, "size")
       .min(0)
       .max(1)
@@ -76,10 +101,10 @@ const Chapter6_1 = () => {
       "THREE.MultiplyBlending": THREE.MultiplyBlending,
       "THREE.CustomBlending": THREE.CustomBlending
     })
-    .name('混合模式')
-    .onChange((visible: boolean) => {
-      material.needsUpdate = true
-    })
+      .name('混合模式')
+      .onChange((visible: boolean) => {
+        material.needsUpdate = true
+      })
 
     /** --- 设置光源 --- */
     // 环境光
