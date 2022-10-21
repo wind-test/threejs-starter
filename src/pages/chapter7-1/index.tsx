@@ -142,8 +142,13 @@ const Chapter7_1 = () => {
     rayCaster.setFromCamera(mouse, camera);
     let result = rayCaster.intersectObjects(cubeArr);
     result.forEach((item: any) => {
-      item.object.material = item.object.material === redMaterial ? material : redMaterial
+      item.object.material = redMaterial
     });
+    if (result.length === 0) {
+      cubeArr.forEach((item: any) => {
+        item.material = material
+      });
+    }
   }
 
   useEffect(() => {
