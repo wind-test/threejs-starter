@@ -24,6 +24,7 @@ import Chapter5_3 from "../pages/chapter5-3";
 import Chapter6_1 from "../pages/chapter6-1";
 import Chapter6_2 from "../pages/chapter6-2";
 import Chapter6_3 from "../pages/chapter6-3";
+import Chapter7_1 from "../pages/chapter7-1";
 
 export const menu = [
   {
@@ -173,6 +174,18 @@ export const menu = [
         key: "6-3",
         path: "/particles/galaxy",
         component: Chapter6_3,
+      },
+    ]
+  },
+  {
+    label: "7. 光线投射",
+    key: "7",
+    children: [
+      {
+        label: "7.1 光线投射",
+        key: "7-1",
+        path: "/raycaster",
+        component: Chapter7_1,
       },
     ]
   },
