@@ -6,8 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
-  controls: OrbitControls,
-  axesHelper;
+  controls: OrbitControls
 
 const Chapter3_2 = () => {
   const ref = useRef<HTMLDivElement>(null);
