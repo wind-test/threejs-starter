@@ -2,7 +2,7 @@
  * @Descripttion: 菜单配置
  * @Author: huangjitao
  * @Date: 2021-08-04 20:56:55
- * @Function: 该文件用途描述
+ * @Function: 菜单页面的路由配置
  */
 
 import Chapter1_1 from "../pages/chapter1-1";
@@ -25,6 +25,7 @@ import Chapter6_1 from "../pages/chapter6-1";
 import Chapter6_2 from "../pages/chapter6-2";
 import Chapter6_3 from "../pages/chapter6-3";
 import Chapter7_1 from "../pages/chapter7-1";
+import Chapter8_1 from "../pages/chapter8-1";
 
 export const menu = [
   {
@@ -186,6 +187,18 @@ export const menu = [
         key: "7-1",
         path: "/raycaster",
         component: Chapter7_1,
+      },
+    ]
+  },
+  {
+    label: "8. 3d全屏滚动",
+    key: "8",
+    children: [
+      {
+        label: "8.1 3d全屏滚动",
+        key: "8-1",
+        path: "/scrollFull3d",
+        component: Chapter8_1,
       },
     ]
   },

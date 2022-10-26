@@ -8,7 +8,7 @@
 
 #### 介绍
 three.js入门指南
-一套快速入门three.js的项目，理论结合实战
+一套快速入门three.js的项目，理论结合实战。
 
 #### 笔记地址
 https://winddancer.notion.site/Three-js-b11a04cecbda40c39831274cfb3e6dcd
