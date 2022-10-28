@@ -5,7 +5,7 @@
  * @Description: 光线投射 Raycaster 的使用
  */
 
-import React, { PointerEvent } from "react";
+import React from "react";
 import { useSize } from "ahooks";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
@@ -134,7 +134,7 @@ const Chapter7_1 = () => {
     };
   }, []);
 
-  const mouseClick = (event: any) => {
+  const mouseClick = (event: MouseEvent) => {
     const width = Number(size?.width); //窗口宽度
     const height = Number(size?.height); //窗口高度
     mouse.x = (event.offsetX / width) * 2 - 1;

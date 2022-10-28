@@ -22,9 +22,8 @@ function App() {
   };
   const location = useLocation();
   if (location.pathname.includes('/pages')) {
-    console.log('111')
     return (
-      <div className="App">
+      <div>
         <Routes>
           {pages.map(item => (
             <Route path={item.path} element={<item.component />} />
