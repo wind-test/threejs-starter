@@ -26,6 +26,7 @@ import Chapter6_2 from "../pages/chapter6-2";
 import Chapter6_3 from "../pages/chapter6-3";
 import Chapter7_1 from "../pages/chapter7-1";
 import Chapter8_1 from "../pages/chapter8-1";
+import Chapter9_1 from "../pages/chapter9-1";
 
 export const menu = [
   {
@@ -199,6 +200,18 @@ export const menu = [
         key: "8-1",
         path: "/scrollFull3d",
         component: Chapter8_1,
+      },
+    ]
+  },
+  {
+    label: "9. 应用物理引擎",
+    key: "9",
+    children: [
+      {
+        label: "9.1 使用cannon创建物理世界",
+        key: "9-1",
+        path: "/physics/createWorld",
+        component: Chapter9_1,
       },
     ]
   },
