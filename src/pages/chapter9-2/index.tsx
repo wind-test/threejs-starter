@@ -1,8 +1,8 @@
 /*
- * @Title: 3d物理引擎
+ * @Title: 物体之间的相互作用力
  * @Author: huangjitao
- * @Date: 2022-11-14 15:02:40
- * @Description: 使用cannon-es创建物理世界
+ * @Date: 2022-11-15 10:01:08
+ * @Description: 创建一个具有物理效果的真实世界
  */
 
 import React from "react";
@@ -12,9 +12,11 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as CANNON from "cannon-es";
 
-let renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera;
+let renderer: THREE.WebGLRenderer,
+  camera: THREE.PerspectiveCamera,
+  cubeArr: { mesh: THREE.Mesh; body: CANNON.Body }[] = [];
 
-const Chapter9_1 = () => {
+const Chapter9_2 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -31,15 +33,62 @@ const Chapter9_1 = () => {
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    /** --- 创建球和平面 --- */
-    const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
-    const sphereMaterial = new THREE.MeshStandardMaterial();
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.castShadow = true;
-    scene.add(sphere);
+    // 创建物理世界
+    const world = new CANNON.World();
+    // 仅设置y轴（垂直方向）的重力加速度
+    world.gravity.set(0, -9.8, 0);
+    // 创建击打声音
+    const hitSound = new Audio("/audio/metal_hit.mp3");
+    // 设置物理立方体材质
+    const cubeWorldMaterial = new CANNON.Material("sphere");
+
+    const createCube = () => {
+      // 创建立方体
+      const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+      const cubeMaterial = new THREE.MeshStandardMaterial();
+      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.castShadow = true;
+      scene.add(cube);
+
+      // 创建物理立方体
+      const cubeShape = new CANNON.Sphere(1);
+      // 创建物理世界的物体
+      const cubeBody = new CANNON.Body({
+        shape: cubeShape,
+        material: cubeWorldMaterial,
+        mass: 1,
+        position: new CANNON.Vec3(0, 0, 0),
+      });
+      cubeBody.applyLocalForce(
+        new CANNON.Vec3(300, 0, 0), //添加的力的大小和方向
+        new CANNON.Vec3(0, 0, 0) //施加的力所在的位置
+      );
+      world.addBody(cubeBody);
+
+      // 添加监听碰撞事件
+      const HitEvent = (e: any) => {
+        // 获取碰撞的强度
+        const impactStrength = e.contact.getImpactVelocityAlongNormal();
+        console.log(impactStrength);
+        if (impactStrength > 2) {
+          //   重新从零开始播放
+          hitSound.currentTime = 0;
+          hitSound.volume = impactStrength / 12;
+          hitSound.play();
+        }
+      };
+      cubeBody.addEventListener("collide", HitEvent);
+
+      cubeArr.push({
+        mesh: cube,
+        body: cubeBody,
+      });
+    };
+
+    window.addEventListener("click", createCube);
 
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 20),
+      new THREE.PlaneGeometry(100, 100),
       new THREE.MeshStandardMaterial()
     );
     floor.position.set(0, -5, 0);
@@ -47,26 +96,12 @@ const Chapter9_1 = () => {
     floor.receiveShadow = true;
     scene.add(floor);
 
-    /** --- 创建物理世界 --- */
-    const world = new CANNON.World();
-    // 仅设置y轴（垂直方向）的重力加速度
-    world.gravity.set(0, -9.8, 0);
-    // 创建物理小球
-    const sphereShape = new CANNON.Sphere(1);
-    // 设置物理小球材质
-    const sphereWorldMaterial = new CANNON.Material();
-    // 创建物理世界的物体
-    const sphereBody = new CANNON.Body({
-      shape: sphereShape,
-      material: sphereWorldMaterial,
-      mass: 1, // 小球质量
-      position: new CANNON.Vec3(0, 0, 0), // 起始位置和three.js中的小球相同
-    });
-    world.addBody(sphereBody);
-
     // 创建物理地面
     const floorShape = new CANNON.Plane();
     const floorBody = new CANNON.Body();
+    // 设置物理地面材质
+    const floorMaterial = new CANNON.Material("floor");
+    floorBody.material = floorMaterial;
     // 设置质量为0时，可以使得地面不动
     floorBody.mass = 0;
     floorBody.addShape(floorShape);
@@ -78,6 +113,20 @@ const Chapter9_1 = () => {
       -Math.PI / 2
     );
     world.addBody(floorBody);
+
+    // 设置立方体和地面材质的碰撞参数
+    const defaultContactMaterial = new CANNON.ContactMaterial(
+      cubeWorldMaterial,
+      floorMaterial,
+      {
+        friction: 0.1, // 设置摩擦力
+        restitution: 0.7, // 设置弹力
+      }
+    );
+    world.addContactMaterial(defaultContactMaterial);
+    // 设置世界碰撞的默认材料，如果材料没有设置，都用这个
+    world.defaultContactMaterial = defaultContactMaterial;
+
 
     /** --- 相机设置 --- */
     // 创建相机
@@ -109,7 +158,12 @@ const Chapter9_1 = () => {
       let deltaTime = clock.getDelta();
       // 更新物理引擎里世界的物体
       world.step(1 / 120, deltaTime);
-      sphere.position.copy(sphereBody.position as any);
+      // 更新物理引擎里世界的物体
+      cubeArr.forEach((item) => {
+        item.mesh.position.copy(item.body.position as any);
+        // 设置渲染的物体跟随物理的物体旋转
+        item.mesh.quaternion.copy(item.body.quaternion as any);
+      });
 
       controls.update();
       renderer.render(scene, camera);
@@ -171,4 +225,4 @@ const Chapter9_1 = () => {
   );
 };
 
-export default Chapter9_1;
+export default Chapter9_2;

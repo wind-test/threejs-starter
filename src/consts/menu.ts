@@ -27,6 +27,7 @@ import Chapter6_3 from "../pages/chapter6-3";
 import Chapter7_1 from "../pages/chapter7-1";
 import Chapter8_1 from "../pages/chapter8-1";
 import Chapter9_1 from "../pages/chapter9-1";
+import Chapter9_2 from "../pages/chapter9-2";
 
 export const menu = [
   {
@@ -212,6 +213,12 @@ export const menu = [
         key: "9-1",
         path: "/physics/createWorld",
         component: Chapter9_1,
+      },
+      {
+        label: "9.2 模拟物理世界的相互作用力",
+        key: "9-2",
+        path: "/physics/applyForce",
+        component: Chapter9_2,
       },
     ]
   },
