@@ -7,6 +7,7 @@
 
 import Chapter1_1 from "../pages/chapter1-1";
 import Chapter1_2 from "../pages/chapter1-2";
+import Chapter10_1 from "../pages/chapter10-1";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
@@ -219,6 +220,18 @@ export const menu = [
         key: "9-2",
         path: "/physics/applyForce",
         component: Chapter9_2,
+      },
+    ]
+  },
+  {
+    label: "10. webgl原理",
+    key: "10",
+    children: [
+      {
+        label: "10.1 使用webgl绘制图形",
+        key: "10-1",
+        path: "/webgl/drawTriangle",
+        component: Chapter10_1,
       },
     ]
   },
