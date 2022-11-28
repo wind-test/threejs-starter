@@ -9,6 +9,7 @@ import Chapter1_1 from "../pages/chapter1-1";
 import Chapter1_2 from "../pages/chapter1-2";
 import Chapter10_1 from "../pages/chapter10-1";
 import Chapter10_2 from "../pages/chapter10-2";
+import Chapter11_1 from "../pages/chapter11-1";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
@@ -239,6 +240,18 @@ export const menu = [
         key: "10-2",
         path: "/webgl/animate",
         component: Chapter10_2,
+      },
+    ]
+  },
+  {
+    label: "11. 着色器编程：入门",
+    key: "11",
+    children: [
+      {
+        label: "11.1 着色器材质",
+        key: "11-1",
+        path: "/webglBasic/shaderMaterial",
+        component: Chapter11_1,
       },
     ]
   },
