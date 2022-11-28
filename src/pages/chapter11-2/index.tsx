@@ -14,11 +14,9 @@ import FragmentShader from './shader/fragment'
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   renderer: THREE.WebGLRenderer,
-  camera: THREE.PerspectiveCamera,
-  controls: OrbitControls,
-  axesHelper;
+  camera: THREE.PerspectiveCamera
 
-const Chapter11_1 = () => {
+const Chapter11_2 = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -26,17 +24,30 @@ const Chapter11_1 = () => {
     /** --- 创建一个场景 --- */
     scene = new THREE.Scene();
 
+    // 创建纹理加载器对象
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load("/textures/flag_paralympic.jpeg");
+
     /** --- 创建一个网格模型 --- */
     // 创建一个几何体
     const geometry = new THREE.PlaneGeometry(1, 1, 64, 64)
     // 创建一个材质对象
-    const shaderMaterial = new THREE.ShaderMaterial({
+    const rawShaderMaterial = new THREE.RawShaderMaterial({
       vertexShader: VertexShader,
       fragmentShader: FragmentShader,
+      side: THREE.DoubleSide,
+      uniforms: {
+        uTime: {
+          value: 0,
+        },
+        uTexture: {
+          value: texture,
+        },
+      }
     })
 
     // 创建一个网格模型对象
-    const mesh = new THREE.Mesh(geometry, shaderMaterial);
+    const mesh = new THREE.Mesh(geometry, rawShaderMaterial);
     // 将网格模型对象添加到场景中
     scene.add(mesh);
 
@@ -50,7 +61,7 @@ const Chapter11_1 = () => {
     scene.add(ambient);
 
     /** ---添加坐标辅助--- */
-    axesHelper = new THREE.AxesHelper(5);
+    const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
 
     /** --- 相机设置 --- */
@@ -73,7 +84,17 @@ const Chapter11_1 = () => {
     ref.current?.appendChild(renderer.domElement); //body元素中插入canvas对象
 
     /** ---创建轨道控制器--- */
-    controls = new OrbitControls(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    const clock = new THREE.Clock();
+    function render() {
+      const elapsedTime = clock.getElapsedTime();
+      rawShaderMaterial.uniforms.uTime.value = elapsedTime;
+      controls.update();
+      renderer.render(scene, camera);
+      // 渲染下一帧的时候就会调用render函数
+      requestAnimationFrame(render);
+    }
     render();
   };
 
@@ -92,13 +113,6 @@ const Chapter11_1 = () => {
     //  设置渲染器的像素比
     renderer.setPixelRatio(window.devicePixelRatio);
   };
-
-  function render() {
-    controls.update();
-    renderer.render(scene, camera);
-    // 渲染下一帧的时候就会调用render函数
-    requestAnimationFrame(render);
-  }
 
   const fullScreen = () => {
     const fullScreenElement = document.fullscreenElement;
@@ -132,4 +146,4 @@ const Chapter11_1 = () => {
   );
 };
 
-export default Chapter11_1;
+export default Chapter11_2;

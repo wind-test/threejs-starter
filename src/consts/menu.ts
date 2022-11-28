@@ -10,6 +10,7 @@ import Chapter1_2 from "../pages/chapter1-2";
 import Chapter10_1 from "../pages/chapter10-1";
 import Chapter10_2 from "../pages/chapter10-2";
 import Chapter11_1 from "../pages/chapter11-1";
+import Chapter11_2 from "../pages/chapter11-2";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
@@ -252,6 +253,12 @@ export const menu = [
         key: "11-1",
         path: "/webglBasic/shaderMaterial",
         component: Chapter11_1,
+      },
+      {
+        label: "11.2 原始着色器材质",
+        key: "11-2",
+        path: "/webglBasic/rawShaderMaterial",
+        component: Chapter11_2,
       },
     ]
   },
