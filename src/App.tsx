@@ -4,16 +4,16 @@
  * @Date: 2021-08-04 20:27:49
  * @Function: 该文件用途描述
  */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Layout } from "antd";
 import SideMenu from "./components/SideMunu";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { menu } from "./consts/menu";
 import PageHeader from "./components/PageHeader";
 import { pages } from "./consts/pages";
 
-const { Sider, Header, Content, Footer } = Layout;
+const { Sider, Header, Content } = Layout;
 
 function App() {
   const [collapsed, setCollapsed] = useState(false);
@@ -54,6 +54,8 @@ function App() {
                   return item.children.map((child) => (
                     <Route path={child.path} element={<child.component />} />
                   ));
+                } else {
+                  return null;
                 }
               })}
               <Navigate to={"/abstract/feature"} />

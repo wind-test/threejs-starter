@@ -11,6 +11,7 @@ import Chapter10_1 from "../pages/chapter10-1";
 import Chapter10_2 from "../pages/chapter10-2";
 import Chapter11_1 from "../pages/chapter11-1";
 import Chapter11_2 from "../pages/chapter11-2";
+import Chapter12_1 from "../pages/chapter12-1";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
@@ -259,6 +260,18 @@ export const menu = [
         key: "11-2",
         path: "/webglBasic/rawShaderMaterial",
         component: Chapter11_2,
+      },
+    ]
+  },
+  {
+    label: "12. 着色器编程：进阶",
+    key: "12",
+    children: [
+      {
+        label: "12.1 着色器编写基本团图案",
+        key: "12-1",
+        path: "/webglAdvance/basicGraph",
+        component: Chapter12_1,
       },
     ]
   },
