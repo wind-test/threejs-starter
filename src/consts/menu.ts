@@ -268,7 +268,7 @@ export const menu = [
     key: "12",
     children: [
       {
-        label: "12.1 着色器编写基本团图案",
+        label: "12.1 着色器编写图案",
         key: "12-1",
         path: "/webglAdvance/basicGraph",
         component: Chapter12_1,

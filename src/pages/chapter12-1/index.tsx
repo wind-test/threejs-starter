@@ -10,7 +10,13 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import VertexShader from './shader/vertex';
-import FragmentShader from './shader/fragment'
+import GUI from "lil-gui";
+import FragmentShader_1 from './shader/fragment_1';
+import FragmentShader_2 from './shader/fragment_2';
+import FragmentShader_3 from "./shader/fragment_3";
+import FragmentShader_4 from "./shader/fragment_4";
+import FragmentShader_5 from "./shader/fragment_5";
+import FragmentShader_6 from "./shader/fragment_6";
 
 let scene: THREE.Scene | THREE.Object3D<THREE.Event>,
   renderer: THREE.WebGLRenderer,
@@ -28,26 +34,44 @@ const Chapter12_1 = () => {
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load("/textures/flag_paralympic.jpeg");
 
+    const params = {
+      uFrequency: 10,
+      uScale: 0.1,
+    };
+
     /** --- 创建一个网格模型 --- */
     // 创建一个几何体
     const geometry = new THREE.PlaneGeometry(1, 1, 64, 64)
     // 创建一个材质对象
-    const rawShaderMaterial = new THREE.RawShaderMaterial({
+    const ShaderMaterial = new THREE.ShaderMaterial({
       vertexShader: VertexShader,
-      fragmentShader: FragmentShader,
-      side: THREE.DoubleSide,
+      fragmentShader: FragmentShader_1,
       uniforms: {
+        uColor: {
+          value: new THREE.Color("purple"),
+        },
+        // 波浪的频率
+        uFrequency: {
+          value: params.uFrequency,
+        },
+        // 波浪的幅度
+        uScale: {
+          value: params.uScale,
+        },
+        // 动画时间
         uTime: {
           value: 0,
         },
         uTexture: {
           value: texture,
         },
-      }
+      },
+      side: THREE.DoubleSide,
+      transparent: true,
     })
 
     // 创建一个网格模型对象
-    const mesh = new THREE.Mesh(geometry, rawShaderMaterial);
+    const mesh = new THREE.Mesh(geometry, ShaderMaterial);
     // 将网格模型对象添加到场景中
     scene.add(mesh);
 
@@ -83,13 +107,30 @@ const Chapter12_1 = () => {
     renderer.render(scene, camera);
     ref.current?.appendChild(renderer.domElement); //body元素中插入canvas对象
 
+    /** ---创建图形界面工具--- */
+    const panel = new GUI();
+    panel
+      .add(ShaderMaterial, "fragmentShader", {
+        '1': FragmentShader_1,
+        '2': FragmentShader_2,
+        '3': FragmentShader_3,
+        '4': FragmentShader_4,
+        '5': FragmentShader_5,
+        '6': FragmentShader_6,
+      })
+      .name('片元着色器')
+      .onChange((value: any) => {
+        ShaderMaterial.fragmentShader = value;
+        ShaderMaterial.needsUpdate = true;
+      })
+
     /** ---创建轨道控制器--- */
     const controls = new OrbitControls(camera, renderer.domElement);
 
     const clock = new THREE.Clock();
     function render() {
       const elapsedTime = clock.getElapsedTime();
-      rawShaderMaterial.uniforms.uTime.value = elapsedTime;
+      ShaderMaterial.uniforms.uTime.value = elapsedTime;
       controls.update();
       renderer.render(scene, camera);
       // 渲染下一帧的时候就会调用render函数
