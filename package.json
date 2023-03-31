@@ -2,7 +2,7 @@
   "name": "three.js-starter",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://epicureanrickylyu.github.io/MyProfolio/",
+  "homepage": "https://wind-test.github.io/threejs-starter/",
   "dependencies": {
     "@ant-design/icons": "^4.6.3",
     "@testing-library/jest-dom": "^5.11.4",
