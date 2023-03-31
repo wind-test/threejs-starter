@@ -8,13 +8,15 @@
 import { Menu } from "antd";
 import { menu } from "../consts/menu";
 import { useSelectedMenu } from "../utils/useSelectedMenu";
+import { useNavigate } from "react-router";
 
 const { SubMenu } = Menu;
 
 const SideMenu = () => {
+  const navigate = useNavigate()
   const { selectedKeys } = useSelectedMenu();
   const changeChapter = (path: string) => {
-    window.location.href = `http://${window.location.host}/#${path}`
+    navigate(path)
     setTimeout(() => {
       window.location.reload()
     }, 1);
