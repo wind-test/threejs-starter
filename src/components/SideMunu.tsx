@@ -15,7 +15,9 @@ const SideMenu = () => {
   const { selectedKeys } = useSelectedMenu();
   const changeChapter = (path: string) => {
     window.location.href = `http://${window.location.host}/#${path}`
-    window.location.reload()
+    setTimeout(() => {
+      window.location.reload()
+    }, 1);
   }
   return (
     <Menu
