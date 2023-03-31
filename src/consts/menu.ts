@@ -12,6 +12,7 @@ import Chapter10_2 from "../pages/chapter10-2";
 import Chapter11_1 from "../pages/chapter11-1";
 import Chapter11_2 from "../pages/chapter11-2";
 import Chapter12_1 from "../pages/chapter12-1";
+import Chapter12_2 from "../pages/chapter12-2";
 import Chapter2_1 from "../pages/chapter2-1";
 import Chapter2_2 from "../pages/chapter2-2";
 import Chapter2_3 from "../pages/chapter2-3";
@@ -272,6 +273,12 @@ export const menu = [
         key: "12-1",
         path: "/webglAdvance/basicGraph",
         component: Chapter12_1,
+      },
+      {
+        label: "12.2 着色器编写飞碟",
+        key: "12-2",
+        path: "/webglAdvance/skyLanterns",
+        component: Chapter12_2,
       },
     ]
   },
